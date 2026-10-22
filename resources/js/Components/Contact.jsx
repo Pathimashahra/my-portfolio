@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import {
     Phone,
     Mail,
@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 
 export default function Contact() {
+    const { flash } = usePage().props;
+
     const {
         data,
         setData,
@@ -21,7 +23,6 @@ export default function Contact() {
         processing,
         errors,
         reset,
-        recentlySuccessful,
     } = useForm({
         name: "",
         email: "",
@@ -243,19 +244,17 @@ export default function Contact() {
                             </p>
                         </div>
 
-                        {recentlySuccessful && (
+                        {flash?.success && (
                             <div
                                 role="status"
+                                aria-live="polite"
                                 className="mt-5 flex items-start gap-3 rounded-xl border border-emerald-400/30 bg-emerald-400/10 p-3 text-sm text-emerald-300"
                             >
                                 <CheckCircle2
                                     size={19}
                                     className="shrink-0"
                                 />
-                                <p>
-                                    Your message has been sent successfully.
-                                    Thank you for contacting me!
-                                </p>
+                                <p>{flash.success}</p>
                             </div>
                         )}
 
@@ -384,6 +383,7 @@ export default function Contact() {
                                     </p>
                                 )}
                             </div>
+
                             <button
                                 type="submit"
                                 disabled={processing}
@@ -401,10 +401,6 @@ export default function Contact() {
                                     <>
                                         <Send size={17} />
                                         Send Message
-                                        <ArrowUpRight
-                                            size={18}
-                                            className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                                        />
                                     </>
                                 )}
                             </button>
